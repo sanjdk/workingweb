@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="row w-100" style="max-width: 800px;">
+    <!-- Sidebar -->
+    <div class="col-md-4 mb-3 mb-md-0">
+      <div class="card shadow-lg h-100" style="background: #142850;">
+        <div class="card-body d-flex flex-md-column flex-row justify-content-center align-items-md-start align-items-center p-3">
+          <ul class="nav nav-pills flex-md-column flex-row w-100" id="profileTabs" role="tablist">
+            <li class="nav-item w-100 mb-2" role="presentation">
+              <button class="nav-link active w-100" id="account-tab" data-bs-toggle="pill" data-bs-target="#account" type="button" role="tab" aria-controls="account" aria-selected="true">
+                <i class="bi bi-person-circle me-2"></i>Account Details
+              </button>
+            </li>
+            <li class="nav-item w-100" role="presentation">
+              <button class="nav-link w-100" id="application-tab" data-bs-toggle="pill" data-bs-target="#application" type="button" role="tab" aria-controls="application" aria-selected="false">
+                <i class="bi bi-file-earmark-text me-2"></i>Application Details
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="col-md-8">
+      <div class="card p-4 shadow-lg h-100" style="background: #1e2746;">
+        <h2 class="mb-3 text-center" style="color:#ffd700;">Profile</h2>
+        <div class="tab-content" id="profileTabsContent">
+          <!-- Account Details Tab -->
+          <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+            <h5 class="text-light">Account Details</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item bg-transparent text-light">Username: <span class="fw-bold">{{ user.username }}</span></li>
+              <li class="list-group-item bg-transparent text-light">Email: <span class="fw-bold">{{ user.email }}</span></li>
+              <li class="list-group-item bg-transparent text-light">Password: <span class="fw-bold">********</span> <span class="text-muted" style="font-size:0.9em;">(hidden for security)</span></li>
+            </ul>
+          </div>
+          <!-- Application Details Tab -->
+          <div class="tab-pane fade" id="application" role="tabpanel" aria-labelledby="application-tab">
+            <h5 class="text-light">Application Details</h5>
+            {% if success %}
+              <div class="alert alert-success">Application details updated successfully.</div>
+            {% endif %}
+            <form method="post" action="">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="id_full_name" class="form-label text-light">Full Name</label>
+                {{ form.full_name }}
+              </div>
+              <div class="mb-3">
+                <label for="id_email" class="form-label text-light">Email</label>
+                {{ form.email }}
+              </div>
+              <div class="mb-3">
+                <label for="id_phone" class="form-label text-light">Phone</label>
+                {{ form.phone }}
+              </div>
+              <div class="mb-3">
+                <label for="id_address" class="form-label text-light">Address</label>
+                {{ form.address }}
+              </div>
+              <div class="mb-3">
+                <label for="id_project_title" class="form-label text-light">Project Title</label>
+                {{ form.project_title }}
+              </div>
+              <div class="mb-3">
+                <label for="id_supervisor" class="form-label text-light">Supervisor</label>
+                {{ form.supervisor }}
+              </div>
+              <div class="mb-3">
+                <label for="id_cycle" class="form-label text-light">Cycle/Year</label>
+                {{ form.cycle }}
+              </div>
+              <button type="submit" class="btn btn-success w-100">Save Application Details</button>
+            </form>
+          </div>
+
+        </div>
+        <div class="text-center mt-4">
+          <a href="/dashboard" class="btn btn-primary me-2">Back to Dashboard</a>
+          <a href="/logout" class="btn btn-danger">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

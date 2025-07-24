@@ -1,0 +1,120 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card p-4 shadow-lg" style="width: 100%; max-width: 500px; background: #1e2746;">
+    <h2 class="mb-3 text-center" style="color:#ffd700;">IIA PDF Application</h2>
+    <div class="mb-4">
+      <div class="progress" style="height: 20px;">
+        <div class="progress-bar bg-warning" role="progressbar" style="width: {{ application.progress|default:0 }}%; color:#142850;" aria-valuenow="{{ application.progress|default:0 }}" aria-valuemin="0" aria-valuemax="100">
+          {{ application.progress|default:0 }}%
+        </div>
+      </div>
+      <div class="text-center mt-2">
+        <span class="badge bg-secondary">Status: {{ application.status }}</span>
+      </div>
+    </div>
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs mb-3" id="pdfAppTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab">Personal Info</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="project-tab" data-bs-toggle="tab" data-bs-target="#project" type="button" role="tab">Project</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="cycle-tab" data-bs-toggle="tab" data-bs-target="#cycle" type="button" role="tab">Cycle/Year</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab">Review & Submit</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="pdfAppTabsContent">
+      <!-- Personal Info Tab -->
+      <div class="tab-pane fade show active bg-dark text-light rounded" id="personal" role="tabpanel" style="background:#1e2746!important;">
+        <form method="post" action="">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="full_name" class="form-label text-light">Full Name</label>
+            <input type="text" class="form-control bg-dark text-light" id="full_name" name="full_name" required value="{{ application.full_name|default:'' }}">
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label text-light">Email</label>
+            <input type="email" class="form-control bg-dark text-light" id="email" name="email" required value="{{ application.email|default:'' }}">
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label text-light">Phone Number</label>
+            <input type="text" class="form-control bg-dark text-light" id="phone" name="phone" value="{{ application.phone|default:'' }}">
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label text-light">Address</label>
+            <input type="text" class="form-control bg-dark text-light" id="address" name="address" value="{{ application.address|default:'' }}">
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Save Personal Info</button>
+        </form>
+      </div>
+      <!-- Project Tab -->
+      <div class="tab-pane fade bg-dark text-light rounded" id="project" role="tabpanel" style="background:#1e2746!important;">
+        <form method="post" action="">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="project_title" class="form-label text-light">Project Title/Topic</label>
+            <input type="text" class="form-control bg-dark text-light" id="project_title" name="project_title" required value="{{ application.project_title|default:'' }}">
+          </div>
+          <div class="mb-3">
+            <label for="supervisor" class="form-label text-light">Supervisor (if applicable)</label>
+            <input type="text" class="form-control bg-dark text-light" id="supervisor" name="supervisor" value="{{ application.supervisor|default:'' }}">
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Save Project Details</button>
+        </form>
+      </div>
+      <!-- Cycle/Year Tab -->
+      <div class="tab-pane fade bg-dark text-light rounded" id="cycle" role="tabpanel" style="background:#1e2746!important;">
+        <form method="post" action="">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="cycle" class="form-label text-light">Cycle/Year</label>
+            <input type="text" class="form-control bg-dark text-light" id="cycle" name="cycle" required value="{{ application.cycle|default:'' }}">
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Save Cycle/Year</button>
+        </form>
+      </div>
+      <!-- Review & Submit Tab -->
+      <div class="tab-pane fade bg-dark text-light rounded" id="review" role="tabpanel" style="background:#1e2746!important;">
+        <div class="mb-3">
+          <h5>Review Your Application</h5>
+          <ul class="list-group">
+            <li class="list-group-item bg-transparent text-light">Full Name: <span id="review_full_name"></span></li>
+            <li class="list-group-item bg-transparent text-light">Email: <span id="review_email"></span></li>
+            <li class="list-group-item bg-transparent text-light">Phone: <span id="review_phone"></span></li>
+            <li class="list-group-item bg-transparent text-light">Address: <span id="review_address"></span></li>
+            <li class="list-group-item bg-transparent text-light">Project Title: <span id="review_project_title"></span></li>
+            <li class="list-group-item bg-transparent text-light">Supervisor: <span id="review_supervisor"></span></li>
+            <li class="list-group-item bg-transparent text-light">Cycle/Year: <span id="review_cycle"></span></li>
+          </ul>
+        </div>
+        <button class="btn btn-success w-100">Submit Application</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// Simple JS to copy form values to review tab (for demo only)
+document.addEventListener('DOMContentLoaded', function() {
+  function updateReview() {
+    document.getElementById('review_full_name').textContent = document.getElementById('full_name')?.value || '';
+    document.getElementById('review_email').textContent = document.getElementById('email')?.value || '';
+    document.getElementById('review_phone').textContent = document.getElementById('phone')?.value || '';
+    document.getElementById('review_address').textContent = document.getElementById('address')?.value || '';
+    document.getElementById('review_project_title').textContent = document.getElementById('project_title')?.value || '';
+    document.getElementById('review_supervisor').textContent = document.getElementById('supervisor')?.value || '';
+    document.getElementById('review_cycle').textContent = document.getElementById('cycle')?.value || '';
+  }
+  document.querySelectorAll('input').forEach(function(input) {
+    input.addEventListener('input', updateReview);
+  });
+  document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(function(tabBtn) {
+    tabBtn.addEventListener('shown.bs.tab', updateReview);
+  });
+});
+</script>
+{% endblock %}
