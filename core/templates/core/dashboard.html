@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
 {% block content %}
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-  <div class="card p-4 shadow-lg" style="width: 100%; max-width: 500px; background: #1e2746;">
+  <div class="card p-4 shadow-lg" style="width: 100%; max-width: 1000px; min-height: 600px; background: #1e2746;">
     <h2 class="mb-3 text-center" style="color:#ffd700;">IIA PDF Application</h2>
     <div class="mb-4">
       <div class="progress" style="height: 20px;">
@@ -14,17 +14,17 @@
       </div>
     </div>
     <!-- Tab Navigation -->
-    <ul class="nav nav-tabs mb-3" id="pdfAppTabs" role="tablist">
-      <li class="nav-item" role="presentation">
+    <ul class="nav nav-tabs mb-3 flex-nowrap" id="pdfAppTabs" role="tablist" style="white-space:nowrap;">
+      <li class="nav-item" role="presentation" style="display:inline-block;">
         <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab">Personal Info</button>
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item" role="presentation" style="display:inline-block;">
         <button class="nav-link" id="project-tab" data-bs-toggle="tab" data-bs-target="#project" type="button" role="tab">Project</button>
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item" role="presentation" style="display:inline-block;">
         <button class="nav-link" id="cycle-tab" data-bs-toggle="tab" data-bs-target="#cycle" type="button" role="tab">Cycle/Year</button>
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item ms-auto" role="presentation" style="display:inline-block; float:right;">
         <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab">Review & Submit</button>
       </li>
     </ul>

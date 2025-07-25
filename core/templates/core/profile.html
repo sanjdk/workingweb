@@ -27,7 +27,7 @@
         <h2 class="mb-3 text-center" style="color:#ffd700;">Profile</h2>
         <div class="tab-content" id="profileTabsContent">
           <!-- Account Details Tab -->
-          <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+          <div class="tab-pane fade" id="account" role="tabpanel" aria-labelledby="account-tab">
             <h5 class="text-light">Account Details</h5>
             <ul class="list-group mb-3">
               <li class="list-group-item bg-transparent text-light">Username: <span class="fw-bold">{{ user.username }}</span></li>
@@ -37,6 +37,31 @@
           </div>
           <!-- Application Details Tab -->
           <div class="tab-pane fade" id="application" role="tabpanel" aria-labelledby="application-tab">
+            <script>
+            // Activate the correct tab and tab-pane based on ?tab=account or ?tab=application
+            document.addEventListener('DOMContentLoaded', function() {
+              const urlParams = new URLSearchParams(window.location.search);
+              const tab = urlParams.get('tab');
+              // Remove 'show active' from all tab-panes and nav-links
+              document.querySelectorAll('.tab-pane').forEach(function(pane) {
+                pane.classList.remove('show', 'active');
+              });
+              document.querySelectorAll('#profileTabs .nav-link').forEach(function(link) {
+                link.classList.remove('active');
+              });
+              if (tab === 'application') {
+                var trigger = document.getElementById('application-tab');
+                var pane = document.getElementById('application');
+                if (trigger) trigger.classList.add('active');
+                if (pane) pane.classList.add('show', 'active');
+              } else {
+                var trigger = document.getElementById('account-tab');
+                var pane = document.getElementById('account');
+                if (trigger) trigger.classList.add('active');
+                if (pane) pane.classList.add('show', 'active');
+              }
+            });
+            </script>
             <h5 class="text-light">Application Details</h5>
             {% if success %}
               <div class="alert alert-success">Application details updated successfully.</div>
@@ -78,7 +103,6 @@
         </div>
         <div class="text-center mt-4">
           <a href="/dashboard" class="btn btn-primary me-2">Back to Dashboard</a>
-          <a href="/logout" class="btn btn-danger">Logout</a>
         </div>
       </div>
     </div>

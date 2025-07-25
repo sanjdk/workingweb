@@ -39,9 +39,29 @@
         <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
         {% if user.is_authenticated %}
-        <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
         <li class="nav-item"><a class="nav-link" href="/eligibility">Check Eligibility</a></li>
-        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+        <li class="nav-item dropdown ms-3">
+          <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i> Profile
+          </a>
+         <ul class="dropdown-menu dropdown-menu-end bg-dark" aria-labelledby="profileDropdown" style="background:#1e2746;">
+            <li><a class="dropdown-item text-light" href="/profile?tab=account">Account Details</a></li>
+            <li><a class="dropdown-item text-light" href="/profile?tab=application">Application Details</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
+        /* Custom style for dark dropdown menu */
+        .dropdown-menu.bg-dark {
+            background: #1e2746 !important;
+        }
+        .dropdown-menu.bg-dark .dropdown-item {
+            color: #fff !important;
+        }
+        .dropdown-menu.bg-dark .dropdown-item:hover, .dropdown-menu.bg-dark .dropdown-item:focus {
+            background: #142850 !important;
+            color: #ffd700 !important;
+        }
+          </ul>
+        </li>
         {% else %}
         <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
         <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
