@@ -45,14 +45,53 @@ def home(request):
 
 # Register page
 def register(request):
+    from django.contrib.auth.models import User
+    from django import forms
+    class CustomRegisterForm(forms.ModelForm):
+        password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+        password2 = forms.CharField(label='Re-enter Password', widget=forms.PasswordInput)
+        class Meta:
+            model = User
+            fields = ['username', 'email']
+        def clean_password2(self):
+            password1 = self.cleaned_data.get('password1')
+            password2 = self.cleaned_data.get('password2')
+            if password1 and password2 and password1 != password2:
+                raise forms.ValidationError("Passwords don't match")
+            return password2
+        def save(self, commit=True):
+            user = super().save(commit=False)
+            user.set_password(self.cleaned_data['password1'])
+            user.is_active = False  # Not active until 'verified'
+            if commit:
+                user.save()
+            return user
+
+    show_verification_message = False
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return render(request, 'core/register_success.html')
+            # Simulate verification: set a flag in session
+            request.session['verified_user_id'] = user.id
+            show_verification_message = True
+            return render(request, 'core/register.html', {'form': form, 'show_verification_message': show_verification_message})
     else:
-        form = UserCreationForm()
+        form = CustomRegisterForm()
     return render(request, 'core/register.html', {'form': form})
+def register_confirm(request):
+    # Simulate verification: set user as active
+    from django.contrib.auth.models import User
+    user_id = request.session.get('verified_user_id')
+    if user_id:
+        try:
+            user = User.objects.get(id=user_id)
+            user.is_active = True
+            user.save()
+            del request.session['verified_user_id']
+        except User.DoesNotExist:
+            pass
+    return render(request, 'core/register_confirm.html')
 
 # Login page
 def login_view(request):
